@@ -3,15 +3,27 @@
 
 <head>
     <!-- Menu bar: Icon as link to home tab, Shopping cart, login-->
-    <title>Yet Another e-Bookshop</title>
+    <title>SS ebookshop</title>
 </head>
 
 <body>
     <!-- Body content -->
 
-    <h2>Yet Another e-Bookshop</h2>
+    <h2>SS ebookshop</h2>
     <form method="post" action="">
-        
+        <form method="get" action="querymvp">
+            Choose an author:
+            <input type="checkbox" name="author" value="Tan Ah Teck" />Ah Teck
+            <input type="checkbox" name="author" value="Mohammad Ali" />Ali
+            <input type="checkbox" name="author" value="Kumar" />Kumar
+            <br /><br />
+            Choose a price range:
+            <input type="radio" name="price" value="50" checked />less than $50
+            <input type="radio" name="price" value="100" />less than $100
+            <br /><br />
+            <input type="submit" value="Search" />
+            <input type="reset" value="Clear" />
+        </form>
     </form>
 
     <!-- Footer optional? -->
