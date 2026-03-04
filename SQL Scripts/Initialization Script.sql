@@ -1,4 +1,4 @@
-Drop database ssbookshop;
+-- Drop database ssbookshop; 
 create database if not exists ssbookshop;
 show databases;
 
