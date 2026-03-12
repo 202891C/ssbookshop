@@ -62,11 +62,11 @@ public class  SSbook extends HttpServlet {
          rset.next();
          out.println("<tr>");
          out.println("<td><img src='/ssbookshop/" + rset.getString("image")+ "'>");
-         out.println("<input type='hidden' id='bookID' value="+ rset.getString("bookID") +" ></td>");
+         out.println("<input type='hidden' name='bookID' value="+ rset.getString("bookID") +" ></td>");
          out.print("<td>"+ rset.getString("title") + "</td>");
          out.print("<td> $"+ rset.getString("price"));
-         out.println("<input type='hidden' id='price' value="+ rset.getString("price") +" ></td>");
-         out.print("<td> <input type='number' id='quantity' name='quantity' min='1' max='$"+ rset.getString("qty") + " value='1'></td>");
+         out.println("<input type='hidden' name='price' value="+ rset.getString("price") +" ></td>");
+         out.print("<td> <input type='number' id='quantity' name='quantity' min='1' max='"+ rset.getString("qty") + "' value='1'></td>");
          out.print("<td>");
          out.print(rset.getString("name") + "<br>");
          while(rset.next()) {
@@ -78,9 +78,9 @@ public class  SSbook extends HttpServlet {
          // count++;
 
          out.println("</table>");
-         out.println("<p>Enter your Name: <input type='text' id='cust_name' /></p>");
-         out.println("<p>Enter your Email: <input type='text' id='cust_email' /></p>");
-         out.println("<p>Enter your Phone Number: <input type='text' id='cust_phone' /></p>");
+         out.println("<p>Enter your Name: <input type='text' name='cust_name' /></p>");
+         out.println("<p>Enter your Email: <input type='text' name='cust_email' /></p>");
+         out.println("<p>Enter your Phone Number: <input type='text' name='cust_phone' /></p>");
          
  
          // Print the submit button and </form> end-tag

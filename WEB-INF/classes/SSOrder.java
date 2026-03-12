@@ -38,69 +38,66 @@ public class SSOrder extends HttpServlet {
          // Step 3 & 4: Execute a SQL SELECT query and Process the query result
          // Retrieve the books' id. Can order more than one books.
          
-         String bookID = request.getParameterValues("bookID");
-         String price = request.getParameterValues("price");
-         int quantity = request.getParameterValues("quantity");
-         String cust_name = request.getParameterValues("cust_name");
-         String cust_email = request.getParameterValues("cust_email");
-         String cust_phone = request.getParameterValues("cust_phone");
+         String bookID[] = request.getParameterValues("bookID");
+         String price[] = request.getParameterValues("price");
+         String qty[] = request.getParameterValues("quantity");
+         String cust_name[] = request.getParameterValues("cust_name");
+         String cust_email[] = request.getParameterValues("cust_email");
+         String cust_phone[] = request.getParameterValues("cust_phone");
          
-         if (quantity !=null){
+         // out.println("<div>"+bookID[0]+"</div>");
+         // out.println(bookID[0]);
+         // out.println(price[0]);
+         // out.println(qty[0]);
+         // out.println(Integer.parseInt(qty[0])*Float.parseFloat(price[0]));
+         // out.println(cust_name[0]);
+         // out.println(cust_email[0]);
+         // out.println(cust_phone[0]);
+
+         if (qty !=null){
             int count;
             String sqlStr;
+            String sqlStr2;
+            String custID;
 
             //create user
-            sqlStr = "insert into customer(name, email, phone_no, passkey) values ('"+ cust_name + "', '" + cust_email + "', " + cust_phone + ", 10001);";
+            sqlStr = "insert into customer(name, email, phone_no, passkey) values ('"+ cust_name[0] + "', '" + cust_email[0] + "', " + cust_phone[0] + ", 10001);";
             out.println("<p>"+ sqlStr +"</p>");
             count = stmt.executeUpdate(sqlStr);
             out.println("<p>" + count + " record updated.</p>");
 
             //update qty in table 'book'
-            sqlStr = "UPDATE book SET qty = qty - " + quantity + " WHERE bookID = " + bookID + ";";
+            sqlStr = "UPDATE book SET qty = qty - " + Integer.parseInt(qty[0]) + " WHERE bookID = " + Integer.parseInt(bookID[0]) + ";";
             out.println("<p>"+ sqlStr +"</p>");
             count = stmt.executeUpdate(sqlStr);
             out.println("<p>" + count + " record updated.</p>");
 
             //get user ID
-            sqlStr = "select custID from customer where (name, email, phone_no) = ('"+ cust_name + "', '" + cust_email + "', " + cust_phone+ ";";
+            sqlStr = "select custID from customer where (name, email, phone_no) = ('"+ cust_name[0] + "', '" + cust_email[0]+ "', " + cust_phone[0]+ ");";
+            out.println("<p>"+ sqlStr +"</p>");
+            ResultSet rset = stmt.executeQuery(sqlStr);
+            rset.next();
+            custID = rset.getString("custID");
+            // out.println("<p>"+ rset +"</p>");
+            // out.println("<p>"+ rset.getString("custID") +"</p>");
+            out.println("<p>" + custID + " </p>");
+            rset.close();
+            // out.println("<p> TEST </p>");
+            //create customer_order
+            sqlStr = "insert into customer_order (custID, bookID, qty, price) values (" + custID + ", " + Integer.parseInt(bookID[0]) + ", " + Integer.parseInt(qty[0])+", " + Integer.parseInt(qty[0])*Float.parseFloat(price[0]) + ");";
+            //  out.println("<p> TEST2 </p>");
             out.println("<p>"+ sqlStr +"</p>");
             count = stmt.executeUpdate(sqlStr);
-            out.println("<p>" + count + " record checked.</p>");
+            out.println("<p>" + count + " record updated.</p>");
+            out.println("<h3>Your order for book" + Integer.parseInt(bookID[0])
+                     + " has been confirmed.</h3>");
+         
+            out.println("<h3>Thank you.<h3>");
 
-            //create customer_order
-            
-
-         }
          } else { // No book selected
             out.println("<h3>Please go back and select a book...</h3>");
          }
-
-
-
-
-         String[] ids = request.getParameterValues("id");
-         if (ids != null) {
-            
-            
- 
-            // Process each of the books
-            for (int i = 0; i < ids.length; ++i) {
-               // Update the qty of the table books
-               sqlStr = "UPDATE books SET qty = qty - 1 WHERE id = " + ids[i];
-               out.println("<p>" + sqlStr + "</p>");  // for debugging
-               count = stmt.executeUpdate(sqlStr);
-               out.println("<p>" + count + " record updated.</p>");
- 
-               // Create a transaction record
-               sqlStr = "INSERT INTO order_records (id, qty_ordered) VALUES ("
-                     + ids[i] + ", 1)";
-               out.println("<p>" + sqlStr + "</p>");  // for debugging
-               count = stmt.executeUpdate(sqlStr);
-               out.println("<p>" + count + " record inserted.</p>");
-               out.println("<h3>Your order for book id=" + ids[i]
-                     + " has been confirmed.</h3>");
-            }
-            out.println("<h3>Thank you.<h3>");
+               
          //-----------------------------------------------------------------------------------------------------------------
 
          // === Step 4 ends HERE - Do NOT delete the following codes ===
