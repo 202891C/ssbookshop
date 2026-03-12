@@ -24,7 +24,7 @@ nav p {
 
 #results {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, 500px);#changed from auto-fill to fit
+	grid-template-columns: repeat(auto-fit, 500px);
 	gap: 10px;
 }
 

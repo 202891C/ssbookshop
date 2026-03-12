@@ -50,8 +50,7 @@ public class  SSbook extends HttpServlet {
 
          out.println("<head><style> table{ border: 1px solid black;}th, td{padding: 5px;box-shadow: 0px 0px 5px black;} img{width:100px}</style></head>");
 
-         out.println("<h3>Thank you for your query.</h3>");
-         out.println("<p>Your SQL statement is: " + sqlStr + "</p>"); // Echo for debugging
+        
          ResultSet rset = stmt.executeQuery(sqlStr);  // Send the query to the server
 
          out.println("<form method='get' action='ssorder'>");

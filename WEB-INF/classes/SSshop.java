@@ -55,8 +55,8 @@ public class  SSshop extends HttpServlet {
 
          // === Form the SQL command - END ===
 
-         out.println("<h3>Thank you for your query.</h3>");
-         out.println("<p>Your SQL statement is: " + sqlStr + "</p>"); // Echo for debugging
+         
+         
          ResultSet rset = stmt.executeQuery(sqlStr);  // Send the query to the server
 
          // Step 4: Process the query result set
@@ -64,7 +64,7 @@ public class  SSshop extends HttpServlet {
          out.println("<div id='results'>");
          while(rset.next()) {
             // Print a paragraph <p>...</p> for each record
-            if(rset.getString("image") != null){
+            /*?*/if(rset.getString("image") != null){
                out.println("<div><a href='ssbook?bookID=" + rset.getString("bookID")+ "'><img src='/ssbookshop/" + rset.getString("image")
                   + "'>, " + rset.getString("title")
                   + ", $" + rset.getDouble("price") + "</a></div>");

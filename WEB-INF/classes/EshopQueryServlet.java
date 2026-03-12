@@ -58,8 +58,7 @@ public class EshopQueryServlet extends HttpServlet {
          // header
          out.println("<head><style> table{ border: 1px solid black;}th, td{padding: 5px;box-shadow: 0px 0px 5px black;}</style></head>");
 
-         out.println("<h3>Thank you for your query.</h3>");
-         out.println("<p>Your SQL statement is: " + sqlStr + "</p>"); // Echo for debugging
+       
          ResultSet rset = stmt.executeQuery(sqlStr);  // Send the query to the server
 
          // Step 4: Process the query result
