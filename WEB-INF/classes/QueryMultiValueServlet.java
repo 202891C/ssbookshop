@@ -33,7 +33,7 @@ public class  QueryMultiValueServlet extends HttpServlet {
       // try (
       //    // Step 1: Allocate a database 'Connection' object
       //    Connection conn = DriverManager.getConnection(
-      //          "jdbc:mysql://localhost:3306/ebookshop?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC",
+      //          "jdbc:mysql://localhost:3306/ssbookshop?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC",
       //          "myuser", "xxxx");   // For MySQL
       //          // The format is: "jdbc:mysql://hostname:port/databaseName", "username", "password"
 

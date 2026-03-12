@@ -8,8 +8,8 @@ import jakarta.servlet.annotation.*;
 //import javax.servlet.http.*;
 //import javax.servlet.annotation.*;
 
-@WebServlet("/ssshop")   // Configure the request URL for this servlet (Tomcat 7/Servlet 3.0 upwards)
-public class  SSshop extends HttpServlet {
+@WebServlet("/ssbook")   // Configure the request URL for this servlet (Tomcat 7/Servlet 3.0 upwards)
+public class  SSbook extends HttpServlet {
 
    // The doGet() runs once per HTTP GET request to this servlet.
    @Override
@@ -22,12 +22,8 @@ public class  SSshop extends HttpServlet {
       // Print an HTML page as the output of the query
       out.println("<!DOCTYPE html>");
       out.println("<html>");
-      out.println("<head><title>SS Eshop</title>");
-      out.println("</head>");
-      out.println("<link rel='stylesheet' href='css/grid.css'>");
+      out.println("<head><title>Query Response</title></head>");
       out.println("<body>");
-
-     
 
       try (
          // Step 1: Allocate a database 'Connection' object
@@ -41,42 +37,53 @@ public class  SSshop extends HttpServlet {
       ) {
          // Step 3: Execute a SQL SELECT query
          // === Form the SQL command - BEGIN ===
-         String[] authors = request.getParameterValues("author");
-         String sqlStr = "SELECT * FROM book WHERE qty > 0 ORDER BY title ASC";
-         // for (int i = 0; i < authors.length; ++i) {
-         //    if (i < authors.length - 1) {
-         //       sqlStr += "'" + authors[i] + "', ";  // need a commas
-         //    } else {
-         //       sqlStr += "'" + authors[i] + "'";    // no commas
-         //    }
-         // }
-         // sqlStr += "WHERE qty > 0 ORDER BY title ASC";
+         String bookID[] = request.getParameterValues("bookID");
+         if (bookID == null) {
+            out.println("<h2>No book selected. Please go back to select book(s)</h2><body></html>");
+            return; // Exit doGet()
+         } 
+         String sqlStr = "SELECT * FROM book, book_author, author WHERE book.bookID = ";
+         sqlStr += bookID[0]; 
+         sqlStr += " AND book.bookID = book_author.bookID AND author.authorID = book_author.authorID;";
 
          // === Form the SQL command - END ===
+
+         out.println("<head><style> table{ border: 1px solid black;}th, td{padding: 5px;box-shadow: 0px 0px 5px black;} img{width:100px}</style></head>");
 
          out.println("<h3>Thank you for your query.</h3>");
          out.println("<p>Your SQL statement is: " + sqlStr + "</p>"); // Echo for debugging
          ResultSet rset = stmt.executeQuery(sqlStr);  // Send the query to the server
 
+         out.println("<form method='get' action='eshoporder'>");
+         out.println("<table><tr>");
+         out.print("<th></th> <th>Author</th> <th>Title</th> <th>Price</th> <th>Quantity</th> </tr>");
          // Step 4: Process the query result set
          int count = 0;
-         out.println("<div id='results'>");
          while(rset.next()) {
             // Print a paragraph <p>...</p> for each record
-            if(rset.getString("image") != null){
-               out.println("<div><a href='ssbook?bookID=" + rset.getString("bookID")+ "'><img src='/ssbookshop/" + rset.getString("image")
-                  + "'>, " + rset.getString("title")
-                  + ", $" + rset.getDouble("price") + "</a></div>");
-            }
-            else{
-               out.println("<div>"
-                  + rset.getString("title")
-                  + ", $" + rset.getDouble("price") + "</div>");
-            }
-           count++;
+            out.println("<tr>");
+            out.println("<td><img src='/ssbookshop/" + rset.getString("image")+ "'></td>");
+
+            out.print("<td>"+ rset.getString("name") + "</td>");
+            out.print("<td>"+ rset.getString("title") + "</td>");
+            out.print("<td> $"+ rset.getString("price") + "</td>");
+            out.print("<td> <input type='number' id='quantity' name='quantity' min='1' max='$"+ rset.getString("qty") + " value='1'></td>");
+            out.print("</tr>");
          }
-         out.println("</div>");
-         out.println("<p>==== " + count + " records found =====</p>");
+         count++;
+
+         out.println("</table>");
+         out.println("<p>Enter your Name: <input type='text' name='cust_name' /></p>");
+         out.println("<p>Enter your Email: <input type='text' name='cust_email' /></p>");
+         out.println("<p>Enter your Phone Number: <input type='text' name='cust_phone' /></p>");
+ 
+         // Print the submit button and </form> end-tag
+         out.println("<p><input type='submit' value='ORDER' />");
+         out.println("</form>");
+         
+
+
+         // out.println("<p>==== " + count + " records found =====</p>");
          // === Step 4 ends HERE - Do NOT delete the following codes ===
       } catch(SQLException ex) {
          out.println("<p>Error: " + ex.getMessage() + "</p>");
