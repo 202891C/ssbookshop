@@ -114,7 +114,7 @@ if (count % 2 != 0) {
 }
 
 out.println("</table>");
-out.println("<p>==== " + count + " records found =====</p>");
+out.println("* * * * * * * Welcome to SS BOOKSHOP * * * * * * *");
 
          out.println("</div>");
          out.println("<p>==== " + count + " records found =====</p>");
