@@ -26,7 +26,7 @@ public class  SSshop extends HttpServlet {
       out.println("<style>img{width:100px}</style>");
       out.println("</head>");
       out.println("<link rel='stylesheet' href='css/grid.css'>");
-      out.println("<body>");
+      out.println("<body style='display: inline'>");
 
      
 
@@ -42,21 +42,68 @@ public class  SSshop extends HttpServlet {
       ) {
          // Step 3: Execute a SQL SELECT query
          // === Form the SQL command - BEGIN ===
-         String[] authors = request.getParameterValues("author");
-         String sqlStr = "SELECT * FROM book WHERE qty > 0 ORDER BY title ASC";
-         // for (int i = 0; i < authors.length; ++i) {
-         //    if (i < authors.length - 1) {
-         //       sqlStr += "'" + authors[i] + "', ";  // need a commas
-         //    } else {
-         //       sqlStr += "'" + authors[i] + "'";    // no commas
-         //    }
-         // }
-         // sqlStr += "WHERE qty > 0 ORDER BY title ASC";
 
+         String login = null;
+         String pw = null;
+         String search = null;
+         if(request.getParameterValues("email") !=null){
+            String[] email = request.getParameterValues("email");
+            String[] password = request.getParameterValues("password");
+
+               if (email[0]!=null && password[0] !=null){
+               String sqlStr = "select email, pass from customer, pw WHERE pass='"+ password[0] + 
+               "' and email='" + email[0] + 
+                  "' and customer.passkey = pw.passkey; ";
+                  // out.println("<p>"+ sqlStr + "</p>");
+                  ResultSet rset = stmt.executeQuery(sqlStr);
+                  // rset.next();
+                  // out.println("<p>"+ rset.getString("email") + "</p>");
+                  while(rset.next()){
+                     login = rset.getString("email");
+                     pw = rset.getString("pass");
+                     // out.println("<p>"+login+"</p>");
+                     // out.println("<p>User Mode</p>");
+                     if (rset.getString("email") == null){
+                     out.println("<p>Error: Invalid Email or Password.</p>");
+                     out.println("<a href='main.html'>Return to login</a>");
+                     out.println("</body></html>");
+                     out.close();
+                     }
+                  }  
+               }
+         }
+         else{
+
+         }
+         out.println("<div id='navbar' style='display: flex; flex: 1 1 100%; height: 50px; background-color: rgb(190, 217, 243);'>");
+         out.println("<div id='searchbar' style='padding: 12.5px; display: inline-block;'>");
+         out.println("<form method='post' action='ssshop' style='display: flex; flex: 1 1 0%;'>");
+         out.println("<input type='text' name='search' placeholder='' required/>");
+         out.println("<input type='hidden' name='email' value='" + login + "'/>");
+         out.println("<input type='hidden' name='password' value='" + pw + "'/>");
+         out.println("<input type='submit' value='Search'/>");
+         out.println("</form></div>");
+
+         out.println("</div>");
+         out.println("<br>");
+         // out.println("<p>"+ email[0] + "</p>");
+         // out.println("<p>"+ password[0] + "</p>");
+         
+         // out.println("<p>"+ login + "</p>");
+         String sqlStr;
+         if(request.getParameterValues("search") !=null){
+            String[] query = request.getParameterValues("search");
+            search = query[0];
+            sqlStr = "SELECT * FROM book WHERE title Like '%" + search + "%' and qty > 0 ORDER BY title ASC";
+         }
+         else{
+            sqlStr = "SELECT * FROM book WHERE qty > 0 ORDER BY title ASC";
+         }
+         
          // === Form the SQL command - END ===
 
-         out.println("<h3>Thank you for your query.</h3>");
-         out.println("<p>Your SQL statement is: " + sqlStr + "</p>"); // Echo for debugging
+         // out.println("<h3>Thank you for your query.</h3>");
+         // out.println("<p>Your SQL statement is: " + sqlStr + "</p>"); // Echo for debugging
          ResultSet rset = stmt.executeQuery(sqlStr);  // Send the query to the server
 
          // Step 4: Process the query result set
@@ -65,18 +112,39 @@ public class  SSshop extends HttpServlet {
          while(rset.next()) {
             // Print a paragraph <p>...</p> for each record
             if(rset.getString("image") != null){
-               out.println("<div><a href='ssbook?bookID=" + rset.getString("bookID")+ "'><img src='/ssbookshop/" + rset.getString("image")
+               if(login==null){
+                  out.println("<div><a href='ssbook?bookID=" + rset.getString("bookID") + 
+                  "'><img src='/ssbookshop/" + rset.getString("image")
                   + "'>, " + rset.getString("title")
                   + ", $" + rset.getDouble("price") + "</a></div>");
+               }
+               else{
+                  out.println("<div><a href='ssbook?bookID=" + rset.getString("bookID") + 
+                  "&login=" + login + "'><img src='/ssbookshop/" + rset.getString("image")
+                  + "'>, " + rset.getString("title")
+                  + ", $" + rset.getDouble("price") + "</a></div>");
+               }
+               
             }
             else{
-               out.println("<div>"
+               if(login==null){
+                  out.println("<div><a href='ssbook?bookID=" + rset.getString("bookID") + "'>"
                   + rset.getString("title")
                   + ", $" + rset.getDouble("price") + "</div>");
+               }
+               else{
+                  
+                  out.println("<div><a href='ssbook?bookID=" + rset.getString("bookID") + 
+                  "&login=" + login + "'>"
+                  + rset.getString("title")
+                  + ", $" + rset.getDouble("price") + "</div>");
+               }
+               
             }
            count++;
          }
          out.println("</div>");
+         out.println("<br>");
          out.println("<p>==== " + count + " records found =====</p>");
          // === Step 4 ends HERE - Do NOT delete the following codes ===
       } catch(SQLException ex) {
@@ -87,5 +155,10 @@ public class  SSshop extends HttpServlet {
  
       out.println("</body></html>");
       out.close();
+   }
+   @Override
+   public void doPost(HttpServletRequest request, HttpServletResponse response)
+                   throws ServletException, IOException {
+      doGet(request, response);  // Re-direct POST request to doGet()
    }
 }
