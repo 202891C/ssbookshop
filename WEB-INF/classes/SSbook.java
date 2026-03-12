@@ -54,31 +54,37 @@ public class  SSbook extends HttpServlet {
          out.println("<p>Your SQL statement is: " + sqlStr + "</p>"); // Echo for debugging
          ResultSet rset = stmt.executeQuery(sqlStr);  // Send the query to the server
 
-         out.println("<form method='get' action='eshoporder'>");
+         out.println("<form method='get' action='ssorder'>");
          out.println("<table><tr>");
-         out.print("<th></th> <th>Author</th> <th>Title</th> <th>Price</th> <th>Quantity</th> </tr>");
+         out.print("<th></th> <th>Title</th> <th>Price</th> <th>Quantity</th> <th>Author</th> </tr>");
          // Step 4: Process the query result set
-         int count = 0;
+         // int count = 0;
+         rset.next();
+         out.println("<tr>");
+         out.println("<td><img src='/ssbookshop/" + rset.getString("image")+ "'>");
+         out.println("<input type='hidden' id='bookID' value="+ rset.getString("bookID") +" ></td>");
+         out.print("<td>"+ rset.getString("title") + "</td>");
+         out.print("<td> $"+ rset.getString("price"));
+         out.println("<input type='hidden' id='price' value="+ rset.getString("price") +" ></td>");
+         out.print("<td> <input type='number' id='quantity' name='quantity' min='1' max='$"+ rset.getString("qty") + " value='1'></td>");
+         out.print("<td>");
+         out.print(rset.getString("name") + "<br>");
          while(rset.next()) {
             // Print a paragraph <p>...</p> for each record
-            out.println("<tr>");
-            out.println("<td><img src='/ssbookshop/" + rset.getString("image")+ "'></td>");
-
-            out.print("<td>"+ rset.getString("name") + "</td>");
-            out.print("<td>"+ rset.getString("title") + "</td>");
-            out.print("<td> $"+ rset.getString("price") + "</td>");
-            out.print("<td> <input type='number' id='quantity' name='quantity' min='1' max='$"+ rset.getString("qty") + " value='1'></td>");
-            out.print("</tr>");
+            out.print(rset.getString("name") + "<br>");  
          }
-         count++;
+         out.print("</td>");  
+         out.print("</tr>");
+         // count++;
 
          out.println("</table>");
-         out.println("<p>Enter your Name: <input type='text' name='cust_name' /></p>");
-         out.println("<p>Enter your Email: <input type='text' name='cust_email' /></p>");
-         out.println("<p>Enter your Phone Number: <input type='text' name='cust_phone' /></p>");
+         out.println("<p>Enter your Name: <input type='text' id='cust_name' /></p>");
+         out.println("<p>Enter your Email: <input type='text' id='cust_email' /></p>");
+         out.println("<p>Enter your Phone Number: <input type='text' id='cust_phone' /></p>");
+         
  
          // Print the submit button and </form> end-tag
-         out.println("<p><input type='submit' value='ORDER' />");
+         out.println("<p><input type='submit' value='ORDER'/>");
          out.println("</form>");
          
 

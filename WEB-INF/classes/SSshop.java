@@ -23,6 +23,7 @@ public class  SSshop extends HttpServlet {
       out.println("<!DOCTYPE html>");
       out.println("<html>");
       out.println("<head><title>SS Eshop</title>");
+      out.println("<style>img{width:100px}</style>");
       out.println("</head>");
       out.println("<link rel='stylesheet' href='css/grid.css'>");
       out.println("<body>");
