@@ -21,57 +21,62 @@ public class  QueryMultiValueServlet extends HttpServlet {
       PrintWriter out = response.getWriter();
       // Print an HTML page as the output of the query
       out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head><title>Query Response</title></head>");
-      out.println("<body>");
+      // out.println("<html>");
+      // out.println("<head><title>Query Response</title></head>");
+      // out.println("<body>");
 
-      try (
-         // Step 1: Allocate a database 'Connection' object
-         Connection conn = DriverManager.getConnection(
-               "jdbc:mysql://localhost:3306/ebookshop?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC",
-               "myuser", "xxxx");   // For MySQL
-               // The format is: "jdbc:mysql://hostname:port/databaseName", "username", "password"
 
-         // Step 2: Allocate a 'Statement' object in the Connection
-         Statement stmt = conn.createStatement();
-      ) {
-         // Step 3: Execute a SQL SELECT query
-         // === Form the SQL command - BEGIN ===
-         String[] authors = request.getParameterValues("author");
-         String sqlStr = "SELECT * FROM books WHERE author IN (";
-         for (int i = 0; i < authors.length; ++i) {
-            if (i < authors.length - 1) {
-               sqlStr += "'" + authors[i] + "', ";  // need a commas
-            } else {
-               sqlStr += "'" + authors[i] + "'";    // no commas
-            }
-         }
-         sqlStr += ") AND qty > 0 ORDER BY author ASC, title ASC";
+      out.println("<script>");
+      out.println("document.getElementById('message').innerHTML='Hello from Java';");
+      out.println("</script>");
 
-         // === Form the SQL command - END ===
+      // try (
+      //    // Step 1: Allocate a database 'Connection' object
+      //    Connection conn = DriverManager.getConnection(
+      //          "jdbc:mysql://localhost:3306/ebookshop?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC",
+      //          "myuser", "xxxx");   // For MySQL
+      //          // The format is: "jdbc:mysql://hostname:port/databaseName", "username", "password"
 
-         out.println("<h3>Thank you for your query.</h3>");
-         out.println("<p>Your SQL statement is: " + sqlStr + "</p>"); // Echo for debugging
-         ResultSet rset = stmt.executeQuery(sqlStr);  // Send the query to the server
+      //    // Step 2: Allocate a 'Statement' object in the Connection
+      //    Statement stmt = conn.createStatement();
+      // ) {
+      //    // Step 3: Execute a SQL SELECT query
+      //    // === Form the SQL command - BEGIN ===
+      //    String[] authors = request.getParameterValues("author");
+      //    String sqlStr = "SELECT * FROM books WHERE author IN (";
+      //    for (int i = 0; i < authors.length; ++i) {
+      //       if (i < authors.length - 1) {
+      //          sqlStr += "'" + authors[i] + "', ";  // need a commas
+      //       } else {
+      //          sqlStr += "'" + authors[i] + "'";    // no commas
+      //       }
+      //    }
+      //    sqlStr += ") AND qty > 0 ORDER BY author ASC, title ASC";
 
-         // Step 4: Process the query result set
-         int count = 0;
-         while(rset.next()) {
-            // Print a paragraph <p>...</p> for each record
-            out.println("<p>" + rset.getString("author")
-                  + ", " + rset.getString("title")
-                  + ", $" + rset.getDouble("price") + "</p>");
-            count++;
-         }
-         out.println("<p>==== " + count + " records found =====</p>");
-         // === Step 4 ends HERE - Do NOT delete the following codes ===
-      } catch(SQLException ex) {
-         out.println("<p>Error: " + ex.getMessage() + "</p>");
-         out.println("<p>Check Tomcat console for details.</p>");
-         ex.printStackTrace();
-      }  // Step 5: Close conn and stmt - Done automatically by try-with-resources (JDK 7)
+      //    // === Form the SQL command - END ===
+
+      //    out.println("<h3>Thank you for your query.</h3>");
+      //    out.println("<p>Your SQL statement is: " + sqlStr + "</p>"); // Echo for debugging
+      //    ResultSet rset = stmt.executeQuery(sqlStr);  // Send the query to the server
+
+      //    // Step 4: Process the query result set
+      //    int count = 0;
+      //    while(rset.next()) {
+      //       // Print a paragraph <p>...</p> for each record
+      //       out.println("<p>" + rset.getString("author")
+      //             + ", " + rset.getString("title")
+      //             + ", $" + rset.getDouble("price") + "</p>");
+      //       count++;
+      //    }
+      //    out.println("<p>==== " + count + " records found =====</p>");
+      //    // === Step 4 ends HERE - Do NOT delete the following codes ===
+      // } catch(SQLException ex) {
+      //    out.println("<p>Error: " + ex.getMessage() + "</p>");
+      //    out.println("<p>Check Tomcat console for details.</p>");
+      //    ex.printStackTrace();
+      // }  // Step 5: Close conn and stmt - Done automatically by try-with-resources (JDK 7)
  
-      out.println("</body></html>");
+      // out.println("</body></html>");
       out.close();
    }
 }
