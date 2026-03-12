@@ -23,9 +23,11 @@ public class  SSshop extends HttpServlet {
       out.println("<!DOCTYPE html>");
       out.println("<html>");
       out.println("<head><title>SS Eshop</title>");
-      out.println("<script>")
       out.println("</head>");
+      out.println("<link rel='stylesheet' href='css/grid.css'>");
       out.println("<body>");
+
+     
 
       try (
          // Step 1: Allocate a database 'Connection' object
@@ -58,6 +60,7 @@ public class  SSshop extends HttpServlet {
 
          // Step 4: Process the query result set
          int count = 0;
+         out.println("<div id='results'>");
          while(rset.next()) {
             // Print a paragraph <p>...</p> for each record
             if(rset.getString("image") != null){
@@ -72,6 +75,7 @@ public class  SSshop extends HttpServlet {
             }
            count++;
          }
+         out.println("</div>");
          out.println("<p>==== " + count + " records found =====</p>");
          // === Step 4 ends HERE - Do NOT delete the following codes ===
       } catch(SQLException ex) {
