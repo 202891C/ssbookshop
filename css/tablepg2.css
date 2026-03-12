@@ -1,0 +1,38 @@
+.book-table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: separate;
+    border-spacing: 20px;
+}
+
+.book-cell {
+    width: 50%;
+    border: 2px solid black;
+    padding: 20px;
+    text-align: center;
+    vertical-align: top;
+    background-color: white;
+}
+
+.book-cell a {
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+.book-image {
+    width: 120px;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px auto;
+}
+
+.book-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.book-price {
+    font-weight: bold;
+}

@@ -60,14 +60,15 @@ public class  SSshop extends HttpServlet {
          ResultSet rset = stmt.executeQuery(sqlStr);  // Send the query to the server
 
          // Step 4: Process the query result set
-         int count = 0;
+         /*int count = 0;
          out.println("<div id='results'>");
-         while(rset.next()) {
+         while(rset.next()) { 
             // Print a paragraph <p>...</p> for each record
-            /*?*/if(rset.getString("image") != null){
+            /*?*//*if(rset.getString("image") != null){
                out.println("<div><a href='ssbook?bookID=" + rset.getString("bookID")+ "'><img src='/ssbookshop/" + rset.getString("image")
                   + "'>, " + rset.getString("title")
                   + ", $" + rset.getDouble("price") + "</a></div>");
+
             }
             else{
                out.println("<div>"
@@ -75,7 +76,46 @@ public class  SSshop extends HttpServlet {
                   + ", $" + rset.getDouble("price") + "</div>");
             }
            count++;
-         }
+         }*/
+        int count = 0;
+out.println("<table class='book-table'>");
+
+while (rset.next()) {
+    if (count % 2 == 0) {
+        out.println("<tr>");
+    }
+
+    out.println("<td class='book-cell'>");
+
+    if (rset.getString("image") != null) {
+        out.println("<a href='ssbook?bookID=" + rset.getString("bookID") + "'>");
+        out.println("<img class='book-image' src='/ssbookshop/" + rset.getString("image") + "' alt='Book cover'>");
+        out.println("<div class='book-title'>" + rset.getString("title") + "</div>");
+        out.println("<div class='book-price'>$" + rset.getDouble("price") + "</div>");
+        out.println("</a>");
+    } else {
+        out.println("<a href='ssbook?bookID=" + rset.getString("bookID") + "'>");
+        out.println("<div class='book-title'>" + rset.getString("title") + "</div>");
+        out.println("<div class='book-price'>$" + rset.getDouble("price") + "</div>");
+        out.println("</a>");
+    }
+
+    out.println("</td>");
+
+    count++;
+
+    if (count % 2 == 0) {
+        out.println("</tr>");
+    }
+}
+
+if (count % 2 != 0) {
+    out.println("</tr>");
+}
+
+out.println("</table>");
+out.println("<p>==== " + count + " records found =====</p>");
+
          out.println("</div>");
          out.println("<p>==== " + count + " records found =====</p>");
          // === Step 4 ends HERE - Do NOT delete the following codes ===
