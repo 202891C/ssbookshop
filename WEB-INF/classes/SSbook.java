@@ -37,6 +37,12 @@ public class  SSbook extends HttpServlet {
       ) {
          // Step 3: Execute a SQL SELECT query
          // === Form the SQL command - BEGIN ===
+         String login = null;
+         if(request.getParameterValues("login") !=null){
+            String email[] = request.getParameterValues("login");
+            login = email[0];
+         }
+         
          String bookID[] = request.getParameterValues("bookID");
          if (bookID == null) {
             out.println("<h2>No book selected. Please go back to select book(s)</h2><body></html>");
@@ -50,10 +56,11 @@ public class  SSbook extends HttpServlet {
 
          out.println("<head><style> table{ border: 1px solid black;}th, td{padding: 5px;box-shadow: 0px 0px 5px black;} img{width:100px}</style></head>");
 
-        
+         // out.println("<h3>Thank you for your query.</h3>");
+         // out.println("<p>Your SQL statement is: " + sqlStr + "</p>"); // Echo for debugging
          ResultSet rset = stmt.executeQuery(sqlStr);  // Send the query to the server
 
-         out.println("<form method='get' action='ssorder'>");
+         out.println("<form method='post' action='ssorder'>");
          out.println("<table><tr>");
          out.print("<th></th> <th>Title</th> <th>Price</th> <th>Quantity</th> <th>Author</th> </tr>");
          // Step 4: Process the query result set
@@ -78,7 +85,13 @@ public class  SSbook extends HttpServlet {
 
          out.println("</table>");
          out.println("<p>Enter your Name: <input type='text' name='cust_name' /></p>");
-         out.println("<p>Enter your Email: <input type='text' name='cust_email' /></p>");
+         if (login == null){
+            out.println("<p>Enter your Email: <input type='text' name='cust_email'/></p>");
+         }
+         else{
+            out.println("<p>Enter your Email: <input type='text' name='cust_email' value='" + login + "'/></p>");
+         }
+         
          out.println("<p>Enter your Phone Number: <input type='text' name='cust_phone' /></p>");
          
  
