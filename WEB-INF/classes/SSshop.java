@@ -145,13 +145,25 @@ while (rset.next()) {
     out.println("<td class='book-cell'>");
 
     if (rset.getString("image") != null) {
-        out.println("<a href='ssbook?bookID=" + rset.getString("bookID") + "'>");
+      if(login!=null){
+         out.println("<a href='ssbook?bookID=" + rset.getString("bookID") + 
+                  "&login=" + login + "'>");
+      }
+      else{
+         out.println("<a href='ssbook?bookID=" + rset.getString("bookID")+ "'>");
+      }
         out.println("<img class='book-image' src='/ssbookshop/" + rset.getString("image") + "' alt='Book cover'>");
         out.println("<div class='book-title'>" + rset.getString("title") + "</div>");
         out.println("<div class='book-price'>$" + rset.getDouble("price") + "</div>");
         out.println("</a>");
     } else {
-        out.println("<a href='ssbook?bookID=" + rset.getString("bookID") + "'>");
+      if(login!=null){
+         out.println("<a href='ssbook?bookID=" + rset.getString("bookID") + 
+                  "&login=" + login + "'>");
+      }
+      else{
+         out.println("<a href='ssbook?bookID=" + rset.getString("bookID")+ "'>");
+      }
         out.println("<div class='book-title'>" + rset.getString("title") + "</div>");
         out.println("<div class='book-price'>$" + rset.getDouble("price") + "</div>");
         out.println("</a>");

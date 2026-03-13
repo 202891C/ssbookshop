@@ -66,8 +66,10 @@ public class SSOrder extends HttpServlet {
             // out.println("<p>"+ sqlStr +"</p>");
             ResultSet rset = stmt.executeQuery(sqlStr);
             rset.next();
-
-               if(rset.getString("custID")==null){
+            if(rset.next()){
+               custID = rset.getString("custID");
+            }
+            else{
                //create user
                sqlStr = "insert into customer(name, email, phone_no, passkey) values ('"+ cust_name[0] + "', '" + cust_email[0] + "', " + cust_phone[0] + ", 10001);";
                // out.println("<p>"+ sqlStr +"</p>");
@@ -79,10 +81,8 @@ public class SSOrder extends HttpServlet {
                ResultSet rs = stmt.executeQuery(sqlStr);
                rs.next();
                custID = rs.getString("custID");
-               }
-               else{
-                  custID = rset.getString("custID");
-               }
+            }
+               
             // out.println("<p>"+ rset +"</p>");
             // out.println("<p>"+ rset.getString("custID") +"</p>");
             // out.println("<p>" + custID + " </p>");
